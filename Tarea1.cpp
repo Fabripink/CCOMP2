@@ -124,6 +124,7 @@ void Calendario(int mes, int ano){
         n=7;
         res=7;
     }
+    if(res==6||res==7){
         for(int i=1;i<=9;i++){
             if(n==7){
                 cout<<i<<endl;
@@ -145,6 +146,30 @@ void Calendario(int mes, int ano){
             n++;
             }
         }
+    }
+    else{
+        for(int i=1;i<=9;i++){
+            if(n==7){
+                cout<<i<<endl;
+                n=1;
+            }
+            else{
+            cout<<i<<"  ";
+            n++;
+            }
+        }
+        n=res+2;
+        for(int i=10;i<=lim;i++){
+            if(n==7){
+                cout<<i<<endl;
+                n=1;
+            }
+            else{
+            cout<<i<<" ";
+            n++;
+            }
+        }
+    }
 }
 void Romanos(int n){
     for(int i=1;i<=1000;i=i*10){
@@ -276,6 +301,6 @@ int main()
 {
     //Vuelto(1051.30);
     //Romanos(4297);
-    Calendario(3,2016);
+    Calendario(12,1999);
     return 0;
 }
