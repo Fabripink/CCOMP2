@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1534701081 source:c:\users\fabri\documents\universidad\ccomp2\tareas\tarea1\main.cpp
+	<iostream>
+
+1534820806 source:c:\users\fabri\documents\universidad\ccomp2\tareas\tarea1\tarea1.cpp
+	<iostream>
+	"ArregloDinamico.h"
+	<stdlib.h>
+	<fstream>
+
+1534805398 source:c:\users\fabri\documents\universidad\ccomp2\tareas\tarea1\src\arreglo dinamico.cpp
+	"Arreglo Dinamico.h"
+
+1534805725 c:\users\fabri\documents\universidad\ccomp2\tareas\tarea1\include\arreglo dinamico.h
+
+1534808370 source:c:\users\fabri\documents\universidad\ccomp2\tareas\tarea1\src\arreglodinamico.cpp
+	"ArregloDinamico.h"
+
+1534808370 c:\users\fabri\documents\universidad\ccomp2\tareas\tarea1\include\arreglodinamico.h
+
