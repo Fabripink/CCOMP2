@@ -8,6 +8,10 @@ ArregloDinamico::ArregloDinamico(int a[],int tam){
     }
 }
 
+ArregloDinamico::~ArregloDinamico(){
+    delete []data;
+}
+
 void ArregloDinamico::Insertar(int n){
     int *nuevo=new int[tam+1];
     for(int i=0;i<tam;i++)

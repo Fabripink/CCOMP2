@@ -37,6 +37,11 @@ int C(int mes,int ano){
             if(ano%100 or !(ano%4 or ano%400))
                 if(mes==1||mes==2)
                     c=-1;
+                else
+                    c=0;
+            else
+                c=0;
+    else
         c=0;
     return c;
 }
@@ -315,6 +320,12 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
         cout<<"el resultado es: "<<res<<"mod"<<a3;
     }
     if(s=='i'){
+
+        if(a1<=0){
+        cout<<"No tiene inverso";
+        return;
+        }
+
         int k=0;
         int r=a2%a1;
         int q;
@@ -323,7 +334,8 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
 
         int qs[0];
         ArregloDinamico a(qs,0);
-        bool im;
+        bool im=false;
+
         for(int i=0;r!=0;i++){
             q=a22/a12;
             a.Insertar(q);
@@ -368,6 +380,7 @@ void escribir(){
     cout<<"Escriba el mensaje: ";
     getline(cin,mensaje);
     archivo<<mensaje;
+
     archivo.close();
 }
 
@@ -393,7 +406,14 @@ int main()
 {
     //Vuelto(1051.30);
     //Romanos(4297);
-    //Calendario(1,1999);
-    CalculadoraM('i',15,26);
+    //Calendario(2,2017);
+    CalculadoraM('i',0,26);
+    //escribir();
+    //leer();
+
+    /*string m="elias es: ";
+    for(int i=0;m[i]!='\0';i++){
+        cout<<m[i]-0<<" ";
+    }*/
     return 0;
 }
