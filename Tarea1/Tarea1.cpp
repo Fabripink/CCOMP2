@@ -320,19 +320,17 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
         cout<<"el resultado es: "<<res<<"mod"<<a3;
     }
     if(s=='i'){
-
         if(a1<=0){
         cout<<"No tiene inverso";
         return;
         }
-
         int k=0;
         int r=a2%a1;
         int q;
         int a12=a1;
         int a22=a2;
-
         int qs[0];
+
         ArregloDinamico a(qs,0);
         bool im=false;
 
@@ -354,7 +352,7 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
         if(im==true){
             for(int i=2;i<=k+2;i++){
                 p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
-                if(p<0)
+                while(p<0)
                     p=a2+p;
                 p=p%a2;
                 b.Insertar(p);
@@ -367,38 +365,93 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
     }
 }
 
-void escribir(){
-    ofstream archivo;
-    string mensaje;
-    archivo.open("crypt.bin",ios::out);
-
-    if(archivo.fail()){
-        cout<< "no se pudo abrir el archivo";
-        exit(1);
-    }
-
-    cout<<"Escriba el mensaje: ";
-    getline(cin,mensaje);
-    archivo<<mensaje;
-
-    archivo.close();
+int InversoM(int a1, int a2){
+    int res;
+    if(a1<=0){
+        return 0;
+        }
+        int k=0;
+        int r=a2%a1;
+        int q;
+        int a12=a1;
+        int a22=a2;
+        int qs[0];
+        ArregloDinamico a(qs,0);
+        bool im=false;
+        for(int i=0;r!=0;i++){
+            q=a22/a12;
+            a.Insertar(q);
+            r=a22%a12;
+            a22=a12;
+            a12=r;
+            if(r==1){
+                k=i;
+                im=true;
+                break;
+            }
+        }
+        int ps[]={0,1};
+        ArregloDinamico b(ps,2);
+        int p;
+        if(im==true){
+            for(int i=2;i<=k+2;i++){
+                p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
+                while(p<0)
+                    p=a2+p;
+                b.Insertar(p);
+            }
+            res=b.GetN(k+2);
+            return res;
+        }
 }
 
-void leer(){
-    ifstream archivo;
-    string mensaje;
-    archivo.open("crypt.bin",ios::in);
-
-    if(archivo.fail()){
-        cout<< "no se pudo abrir el archivo";
-        exit(1);
-    }
-
-    while(!archivo.eof()){
-        getline(archivo,mensaje);
-        cout<<mensaje<<endl;
-    }
-    archivo.close();
+void Cifrado(){
+	cout<<"Cifrar(0)\nDescifrar(1)"<<endl;
+	int o;
+	cin>>o;
+	const char *p;
+	if(!o)
+        p="PLAIN1.txt";
+	else
+        p="CIPHER.txt";
+	ifstream fin(p,ios::binary);
+	fin.seekg(0,ios::end);
+	int l=fin.tellg();
+	fin.seekg(0,ios::beg);
+	char arr[l];
+	fin.read(arr,l);
+	fin.close();
+	int n;
+	if(!o)
+        cout<<"ingrese la llave privada"<<endl;
+	else
+        cout<<"ingrese la llave publica"<<endl;
+	int y=0;
+	if(!o){
+		while(y==0){
+			cin>>n;
+			y=InversoM(n,256);
+			if(y<=0)
+                cout<<"Ese numero no se puede usar como llave privada"<<endl;
+		}
+	}
+	else
+        cin>>n;
+	const char *f;
+	if(!o)
+        f="CIPHER.txt";
+	else
+        f="PLAIN2.txt";
+	ofstream fout (f);
+	for(int i=0;i<l;i++){
+		int r=arr[i];
+		r=(r*n)%256;
+		char t=r;
+		fout<<t;
+	}
+	if(!o)
+        cout<<y<<endl;
+    fout.close();
 }
 
 
@@ -407,13 +460,6 @@ int main()
     //Vuelto(1051.30);
     //Romanos(4297);
     //Calendario(2,2017);
-    CalculadoraM('i',0,26);
-    //escribir();
-    //leer();
-
-    /*string m="elias es: ";
-    for(int i=0;m[i]!='\0';i++){
-        cout<<m[i]-0<<" ";
-    }*/
+    CalculadoraM('i',5,256);
     return 0;
 }
