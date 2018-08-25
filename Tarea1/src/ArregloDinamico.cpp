@@ -8,6 +8,11 @@ ArregloDinamico::ArregloDinamico(int a[],int tam){
     }
 }
 
+ArregloDinamico::ArregloDinamico(int tam){
+    this->tam = tam;
+    data=new int [tam];
+}
+
 ArregloDinamico::~ArregloDinamico(){
     delete []data;
 }
@@ -24,4 +29,8 @@ void ArregloDinamico::Insertar(int n){
 
 int ArregloDinamico::GetN(int n){
     return data[n];
+}
+
+int ArregloDinamico::GetTam(){
+    return tam;
 }

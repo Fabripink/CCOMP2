@@ -37,6 +37,11 @@ int C(int mes,int ano){
             if(ano%100 or !(ano%4 or ano%400))
                 if(mes==1||mes==2)
                     c=-1;
+                else
+                    c=0;
+            else
+                c=0;
+    else
         c=0;
     return c;
 }
@@ -264,29 +269,18 @@ void Romanos(int n){
 }
 
 void Vuelto(float b){
-    int a=(b*100)+1;
-    int b200;
-    int b100;
-    int b50;
-    int b20;
-    int b10;
-    int m5;
-    int m2;
-    int m1;
-    int m05;
-    int m02;
-    int m01;
+    int a=(b*100)+1,b200,b100,b50,b20,b10,m5,m2,m1,m05,m02,m01;
     b200=a/20000;
     b100=(a%20000)/10000;
-    b50=((a%20000)%10000)/5000;
-    b20=(((a%20000)%10000)%5000)/2000;
-    b10=((((a%20000)%10000)%5000)%20000)/1000;
-    m5=(((((a%20000)%10000)%5000)%2000)%1000)/500;
-    m2=((((((a%20000)%10000)%5000)%2000)%1000)%500)/200;
-    m1=(((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)/100;
-    m05=((((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)%100)/50;
-    m02=(((((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)%100)%50)/20;
-    m01=((((((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)%100)%50)%20)/10;
+    b50=(a%20000%10000)/5000;
+    b20=(a%20000%10000%5000)/2000;
+    b10=(a%20000%10000%5000%2000)/1000;
+    m5=(a%20000%10000%5000%2000%1000)/500;
+    m2=(a%20000%10000%5000%2000%1000%500)/200;
+    m1=(a%20000%10000%5000%2000%1000%500%200)/100;
+    m05=(a%20000%10000%5000%2000%1000%500%200%100)/50;
+    m02=(a%20000%10000%5000%2000%1000%500%200%100%50)/20;
+    m01=(a%20000%10000%5000%2000%1000%500%200%100%50%20)/10;
     cout<<"billetes de 200: "<<b200<<endl
     <<"billetes de 100: "<<b100<<endl
     <<"billetes de 50: "<<b50<<endl
@@ -315,15 +309,20 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
         cout<<"el resultado es: "<<res<<"mod"<<a3;
     }
     if(s=='i'){
+        if(a1<=0){
+        cout<<"No tiene inverso";
+        return;
+        }
         int k=0;
         int r=a2%a1;
         int q;
         int a12=a1;
         int a22=a2;
-
         int qs[0];
+
         ArregloDinamico a(qs,0);
-        bool im;
+        bool im=false;
+
         for(int i=0;r!=0;i++){
             q=a22/a12;
             a.Insertar(q);
@@ -342,7 +341,7 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
         if(im==true){
             for(int i=2;i<=k+2;i++){
                 p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
-                if(p<0)
+                while(p<0)
                     p=a2+p;
                 p=p%a2;
                 b.Insertar(p);
@@ -355,45 +354,73 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
     }
 }
 
-void escribir(){
-    ofstream archivo;
-    string mensaje;
-    archivo.open("crypt.bin",ios::out);
-
-    if(archivo.fail()){
-        cout<< "no se pudo abrir el archivo";
-        exit(1);
-    }
-
-    cout<<"Escriba el mensaje: ";
-    getline(cin,mensaje);
-    archivo<<mensaje;
-    archivo.close();
+int InversoM(int a1, int a2){
+    int res;
+    if(a1<=0){
+        return 0;
+        }
+        int k=0;
+        int r=a2%a1;
+        int q;
+        int a12=a1;
+        int a22=a2;
+        int qs[0];
+        ArregloDinamico a(qs,0);
+        bool im=false;
+        for(int i=0;r!=0;i++){
+            q=a22/a12;
+            a.Insertar(q);
+            r=a22%a12;
+            a22=a12;
+            a12=r;
+            if(r==1){
+                k=i;
+                im=true;
+                break;
+            }
+        }
+        int ps[]={0,1};
+        ArregloDinamico b(ps,2);
+        int p;
+        if(im==true){
+            for(int i=2;i<=k+2;i++){
+                p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
+                while(p<0)
+                    p=a2+p;
+                p=p%a2;
+                b.Insertar(p);
+            }
+            res=b.GetN(k+2);
+            return res;
+        }
 }
 
-void leer(){
-    ifstream archivo;
-    string mensaje;
-    archivo.open("crypt.bin",ios::in);
-
-    if(archivo.fail()){
-        cout<< "no se pudo abrir el archivo";
-        exit(1);
+ArregloDinamico Cifrado(string msn){
+    ArregloDinamico cf(0);
+    for(int i=0 ; i<msn.length() ;i++){
+        int tmp=msn[i];
+        int cifrar = (tmp*5)%256;
+        cf.Insertar(cifrar);
+        cout<<cf.GetN(i);
     }
-
-    while(!archivo.eof()){
-        getline(archivo,mensaje);
-        cout<<mensaje<<endl;
-    }
-    archivo.close();
+    return cf;
 }
 
+ArregloDinamico Descifrado(ArregloDinamico msn){
+    string dcf;
+    for(int i=0;i<msn.GetTam();i++){
+        dcf[i]=(msn.GetN(i)*205)%256;
+        cout<<dcf[i];
+    }
+}
 
 int main()
 {
-    //Vuelto(1051.30);
-    //Romanos(4297);
-    //Calendario(1,1999);
-    CalculadoraM('i',15,26);
+    //Vuelto(1254.80);
+    //Romanos(437);
+    //Calendario(10,1997);
+    //CalculadoraM('*',2,8,4);
+    Cifrado("hola");
+    Descifrado(Cifrado("hola"));
     return 0;
 }

@@ -8,9 +8,11 @@ class ArregloDinamico
     int tam;
     public:
         ArregloDinamico(int[], int);
+        ArregloDinamico(int);
         ~ArregloDinamico();
         void Insertar(int);
         int GetN(int);
+        int GetTam();
 };
 
 #endif // ARREGLO DINAMICO_H

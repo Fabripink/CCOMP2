@@ -269,29 +269,18 @@ void Romanos(int n){
 }
 
 void Vuelto(float b){
-    int a=(b*100)+1;
-    int b200;
-    int b100;
-    int b50;
-    int b20;
-    int b10;
-    int m5;
-    int m2;
-    int m1;
-    int m05;
-    int m02;
-    int m01;
+    int a=(b*100)+1,b200,b100,b50,b20,b10,m5,m2,m1,m05,m02,m01;
     b200=a/20000;
     b100=(a%20000)/10000;
-    b50=((a%20000)%10000)/5000;
-    b20=(((a%20000)%10000)%5000)/2000;
-    b10=((((a%20000)%10000)%5000)%20000)/1000;
-    m5=(((((a%20000)%10000)%5000)%2000)%1000)/500;
-    m2=((((((a%20000)%10000)%5000)%2000)%1000)%500)/200;
-    m1=(((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)/100;
-    m05=((((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)%100)/50;
-    m02=(((((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)%100)%50)/20;
-    m01=((((((((((a%20000)%10000)%5000)%2000)%1000)%500)%200)%100)%50)%20)/10;
+    b50=(a%20000%10000)/5000;
+    b20=(a%20000%10000%5000)/2000;
+    b10=(a%20000%10000%5000%2000)/1000;
+    m5=(a%20000%10000%5000%2000%1000)/500;
+    m2=(a%20000%10000%5000%2000%1000%500)/200;
+    m1=(a%20000%10000%5000%2000%1000%500%200)/100;
+    m05=(a%20000%10000%5000%2000%1000%500%200%100)/50;
+    m02=(a%20000%10000%5000%2000%1000%500%200%100%50)/20;
+    m01=(a%20000%10000%5000%2000%1000%500%200%100%50%20)/10;
     cout<<"billetes de 200: "<<b200<<endl
     <<"billetes de 100: "<<b100<<endl
     <<"billetes de 50: "<<b50<<endl
@@ -398,68 +387,42 @@ int InversoM(int a1, int a2){
                 p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
                 while(p<0)
                     p=a2+p;
+                p=p%a2;
                 b.Insertar(p);
             }
             res=b.GetN(k+2);
             return res;
         }
+        else
+            return a1;
 }
 
-void Cifrado(){
-	cout<<"Cifrar(0)\nDescifrar(1)"<<endl;
-	int o;
-	cin>>o;
-	const char *p;
-	if(!o)
-        p="PLAIN1.txt";
-	else
-        p="CIPHER.txt";
-	ifstream fin(p,ios::binary);
-	fin.seekg(0,ios::end);
-	int l=fin.tellg();
-	fin.seekg(0,ios::beg);
-	char arr[l];
-	fin.read(arr,l);
-	fin.close();
-	int n;
-	if(!o)
-        cout<<"ingrese la llave privada"<<endl;
-	else
-        cout<<"ingrese la llave publica"<<endl;
-	int y=0;
-	if(!o){
-		while(y==0){
-			cin>>n;
-			y=InversoM(n,256);
-			if(y<=0)
-                cout<<"Ese numero no se puede usar como llave privada"<<endl;
-		}
-	}
-	else
-        cin>>n;
-	const char *f;
-	if(!o)
-        f="CIPHER.txt";
-	else
-        f="PLAIN2.txt";
-	ofstream fout (f);
-	for(int i=0;i<l;i++){
-		int r=arr[i];
-		r=(r*n)%256;
-		char t=r;
-		fout<<t;
-	}
-	if(!o)
-        cout<<y<<endl;
-    fout.close();
+ArregloDinamico Cifrado(string msn){
+    ArregloDinamico cf(0);
+    for(int i=0 ; i<msn.length() ;i++){
+        int tmp=msn[i];
+        int cifrar =InversoM(tmp,255);
+        cf.Insertar(cifrar);
+    }
+    return cf;
 }
 
+ Descifrado(ArregloDinamico msn){
+    string dcf;
+    for(int i=0;i<msn.GetTam();i++){
+        dcf[i]=InversoM(msn.GetN(i),255);
+        cout<<dcf[i];
+    }
+}
 
 int main()
 {
-    //Vuelto(1051.30);
-    //Romanos(4297);
-    //Calendario(2,2017);
-    CalculadoraM('i',5,256);
+    //Vuelto(1254.80);
+    //Romanos(437);
+    //Calendario(10,1997);
+    //CalculadoraM('*',2,8,4);
+    string msn="carro";
+    ArregloDinamico cp=Cifrado(msn);
+    Descifrado(cp);
     return 0;
 }
