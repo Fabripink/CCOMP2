@@ -355,74 +355,80 @@ void CalculadoraM(char s,int a1,int a2,int a3=1){
 }
 
 int InversoM(int a1, int a2){
-    int res;
+    int res=0;
     if(a1<=0){
+        cout<<"No tiene inverso"<<endl;
         return 0;
         }
-        int k=0;
-        int r=a2%a1;
-        int q;
-        int a12=a1;
-        int a22=a2;
-        int qs[0];
-        ArregloDinamico a(qs,0);
-        bool im=false;
-        for(int i=0;r!=0;i++){
-            q=a22/a12;
-            a.Insertar(q);
-            r=a22%a12;
-            a22=a12;
-            a12=r;
-            if(r==1){
-                k=i;
-                im=true;
-                break;
-            }
+    int k=0;
+    int r=a2%a1;
+    int q;
+    int a12=a1;
+    int a22=a2;
+    int qs[0];
+    ArregloDinamico a(qs,0);
+    bool im=false;
+    for(int i=0;r!=0;i++){
+        q=a22/a12;
+        a.Insertar(q);
+        r=a22%a12;
+        a22=a12;
+        a12=r;
+        if(r==1){
+            k=i;
+            im=true;
+            break;
         }
-        int ps[]={0,1};
-        ArregloDinamico b(ps,2);
-        int p;
-        if(im==true){
-            for(int i=2;i<=k+2;i++){
-                p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
-                while(p<0)
-                    p=a2+p;
-                p=p%a2;
-                b.Insertar(p);
-            }
-            res=b.GetN(k+2);
-            return res;
-        }
-        else
-            return a1;
-}
-
-ArregloDinamico Cifrado(string msn){
-    ArregloDinamico cf(0);
-    for(int i=0 ; i<msn.length() ;i++){
-        int tmp=msn[i];
-        int cifrar =InversoM(tmp,255);
-        cf.Insertar(cifrar);
     }
-    return cf;
+    int ps[]={0,1};
+    ArregloDinamico b(ps,2);
+    int p;
+    if(im==true){
+        for(int i=2;i<=k+2;i++){
+            p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
+            while(p<0)
+                p=a2+p;
+            p=p%a2;
+            b.Insertar(p);
+        }
+        res=b.GetN(k+2);
+        return res;
+    }
+    else
+        return a1;
 }
 
- Descifrado(ArregloDinamico msn){
+string Cifrado(int cp, string msn){
+        int a=InversoM(cp,256);
+    string cpb;
+    for(int i=0;i<msn.size();i++){
+        int tmp=(msn[i]*a)%256;
+        cpb+=tmp;
+        cout<<cpb[i];
+    }
+    cout<<endl;
+    return cpb;
+}
+
+string Descifrado(int cp, string msn){
     string dcf;
-    for(int i=0;i<msn.GetTam();i++){
-        dcf[i]=InversoM(msn.GetN(i),255);
+    for(int i=0;i<msn.size();i++){
+        int tmp=(msn[i]*cp)%256;
+        dcf[i]+=tmp;
         cout<<dcf[i];
     }
+    cout<<endl;
+    return dcf;
 }
 
 int main()
 {
-    //Vuelto(1254.80);
-    //Romanos(437);
-    //Calendario(10,1997);
-    //CalculadoraM('*',2,8,4);
-    string msn="carro";
-    ArregloDinamico cp=Cifrado(msn);
-    Descifrado(cp);
+    //Vuelto(1254.70);
+    //Romanos(1999);
+    //Calendario(2,1976);
+    //CalculadoraM('-',100,300,256);
+    string msn="hola";
+    string a=Cifrado(5, msn);
+    Descifrado(5, a);
     return 0;
 }

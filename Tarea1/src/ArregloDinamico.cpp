@@ -34,3 +34,9 @@ int ArregloDinamico::GetN(int n){
 int ArregloDinamico::GetTam(){
     return tam;
 }
+
+void ArregloDinamico::Imp(){
+    for(int i=0;i<tam-1;i++)
+        cout<<data[i]<<" ";
+    cout<<data[tam-1]<<endl;
+}
