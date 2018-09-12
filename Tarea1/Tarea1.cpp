@@ -398,26 +398,53 @@ int InversoM(int a1, int a2){
         return a1;
 }
 
-string Cifrado(int cp, string msn){
-        int a=InversoM(cp,256);
+void escribir(char nombre[], string mensaje){
+    ofstream archivo;
+    archivo.open(nombre,ios::out);
+    if(archivo.fail()){
+        cout<< "no se pudo abrir el archivo";
+        exit(1);
+    }
+    archivo<<mensaje;
+    archivo.close();
+}
+
+string leer(char nombre[]){
+    ifstream archivo;
+    string mensaje;
+    archivo.open(nombre,ios::in);
+    if(archivo.fail()){
+        cout<< "no se pudo abrir el archivo";
+        exit(1);
+    }
+    while(!archivo.eof()){
+        getline(archivo,mensaje);
+    }
+    archivo.close();
+    return mensaje;
+}
+
+string Cifrado(int cp){
+    string msn=leer("mensaje.txt");
+        InversoM(cp,256);
     string cpb;
     for(int i=0;i<msn.size();i++){
-        int tmp=(msn[i]*a)%256;
+        int tmp=(msn[i]*cp)%256;
         cpb+=tmp;
-        cout<<cpb[i];
     }
-    cout<<endl;
+    escribir("cifrado.bin",cpb);
     return cpb;
 }
 
-string Descifrado(int cp, string msn){
+string Descifrado(int cp){
     string dcf;
+    string msn=leer("cifrado.bin");
+    int a=InversoM(cp,256);
     for(int i=0;i<msn.size();i++){
-        int tmp=(msn[i]*cp)%256;
-        dcf[i]+=tmp;
-        cout<<dcf[i];
+        int tmp=(msn[i]*a)%256;
+        dcf+=tmp;
     }
-    cout<<endl;
+    escribir("descifrado.bin", dcf);
     return dcf;
 }
 
@@ -427,8 +454,7 @@ int main()
     //Romanos(1999);
     //Calendario(2,1976);
     //CalculadoraM('-',100,300,256);
-    string msn="hola";
-    string a=Cifrado(5, msn);
-    Descifrado(5, a);
+    Cifrado(5);
+    Descifrado(5);
     return 0;
 }

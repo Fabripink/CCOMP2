@@ -360,65 +360,91 @@ int InversoM(int a1, int a2){
         cout<<"No tiene inverso"<<endl;
         return 0;
         }
-        int k=0;
-        int r=a2%a1;
-        int q;
-        int a12=a1;
-        int a22=a2;
-        int qs[0];
-        ArregloDinamico a(qs,0);
-        bool im=false;
-        for(int i=0;r!=0;i++){
-            q=a22/a12;
-            a.Insertar(q);
-            r=a22%a12;
-            a22=a12;
-            a12=r;
-            if(r==1){
-                k=i;
-                im=true;
-                break;
-            }
+    int k=0;
+    int r=a2%a1;
+    int q;
+    int a12=a1;
+    int a22=a2;
+    int qs[0];
+    ArregloDinamico a(qs,0);
+    bool im=false;
+    for(int i=0;r!=0;i++){
+        q=a22/a12;
+        a.Insertar(q);
+        r=a22%a12;
+        a22=a12;
+        a12=r;
+        if(r==1){
+            k=i;
+            im=true;
+            break;
         }
-        int ps[]={0,1};
-        ArregloDinamico b(ps,2);
-        int p;
-        if(im==true){
-            for(int i=2;i<=k+2;i++){
-                p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
-                while(p<0)
-                    p=a2+p;
-                p=p%a2;
-                b.Insertar(p);
-            }
-            res=b.GetN(k+2);
-            return res;
+    }
+    int ps[]={0,1};
+    ArregloDinamico b(ps,2);
+    int p;
+    if(im==true){
+        for(int i=2;i<=k+2;i++){
+            p=b.GetN(i-2)-(b.GetN(i-1)*a.GetN(i-2));
+            while(p<0)
+                p=a2+p;
+            p=p%a2;
+            b.Insertar(p);
         }
-        else
-            return a1;
+        res=b.GetN(k+2);
+        return res;
+    }
+    else
+        return a1;
+}
+
+void escribir(string mensaje){
+    ofstream archivo;
+    archivo.open("crypt.bin",ios::out);
+    if(archivo.fail()){
+        cout<< "no se pudo abrir el archivo";
+        exit(1);
+    }
+    archivo<<mensaje;
+    archivo.close();
+}
+
+string leer(){
+    ifstream archivo;
+    archivo.open("crypt.bin",ios::in);
+    if(archivo.fail()){
+        cout<< "no se pudo abrir el archivo";
+        exit(1);
+    }
+    while(!archivo.eof()){
+        return mensaje;
+    }
+    archivo.close();
 }
 
 string Cifrado(int cp, string msn){
-        int a=InversoM(cp,256);
+        InversoM(cp,256);
     string cpb;
-    cout<<a<<endl;
     for(int i=0;i<msn.size();i++){
-        int tmp=(msn[i]*a)%256;
-        cpb[i]=tmp;
-        cout<<cpb[i];
+        int tmp=(msn[i]*cp)%256;
+        cpb+=tmp;
+
     }
     cout<<endl;
     return cpb;
 }
 
-string Descifrado(int cp, string msn){
-        int a=InversoM(cp,256);
+string Descifrado(int cp){
+    msn=leer();
     string dcf;
+    int a=InversoM(cp,256);
     for(int i=0;i<msn.size();i++){
-        int tmp=(msn[i]*cp)%256;
-        dcf[i]=InversoM(msn[i],255)/cp;
+        int tmp=(msn[i]*a)%256;
+        dcf+=tmp;
         cout<<dcf[i];
     }
+    cout<<endl;
+    return dcf;
 }
 
 int main()
@@ -428,7 +454,8 @@ int main()
     //Calendario(2,1976);
     //CalculadoraM('-',100,300,256);
     string msn="hola";
-    string a=Cifrado(6,msn);
-    string b=Descifrado(,a);
+    string a=Cifrado(5, msn);
+    escribir(a);
+    Descifrado(5, a);
     return 0;
 }
